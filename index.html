@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>VR Car Drive Simulation</title>
+
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
+  <script src="./drive.js"></script>
+  <script src="./game.js"></script>
+
+</head>
+
+<body>
+  <a-scene id="scene" background="color:lightblue" inspector-plugin-recast>
+
+    <a-assets>
+      <a-asset-item id="city" src="./assets/low_poly_city/scene.gltf"></a-asset-item>
+
+      <a-asset-item id="navmesh" src="./assets/navmesh.gltf"></a-asset-item>
+
+      <a-asset-item id="wheel" src="./assets/steering_wheel/scene.gltf"></a-asset-item>
+
+      <audio id="drive" src="./assets/sounds/Sports-Car-Driving-Soft-www.fesliyanstudios.com.mp3"></audio>
+    </a-assets>
+
+    <!--Lighting-->
+    <a-entity light="type: directional; color: #fff; intensity: 1" position="-10 10 20"></a-entity>
+    <a-entity light="type: ambient; color: white; intensity:1.25"></a-entity>
+
+
+    <!--CIty-->
+    <a-entity id="cityscene" position="10 0 -110" rotation="0 90 0" gltf-model="#city" visible="true">
+    </a-entity>
+
+    <!--Boundaries-->
+    <a-box id="boundary1" position="-70 0 -117" rotation="0 90 0" width="308" height="25" color="red"></a-box>
+
+    <a-box id="boundary2" position="0 0 35" width="150" height="25" color="red"></a-box>
+
+    <a-box id="boundary3" position="70 0 -117" rotation="0 90 0" width="308" height="25" color="red"></a-box>
+
+    <a-box id="boundary4" position="0 0 -268" width="150" height="25" color="red"></a-box>
+
+    <!--Ground-->
+    <a-plane id="ground" height="315" width="150" depth="1" repeat="5 5" position="0 -10 -113"
+      rotation="-90 0 0" color="white" visible="false">
+    </a-plane>
+
+    <!--Navmesh-->
+    <a-entity id="collider" gltf-model="#navmesh" position="0 10 0" visible="false" nav-mesh></a-entity>
+
+    <!--CameraRig-->
+  <a-entity id="camera-rig" position="0 1 5" rotation="0 0 0" movement-controls="speed: 0.5; constrainToNavMesh: true">
+
+      <!--Camera-->
+    <a-entity id="camera" position="0 0 5" rotation="0 0 0" camera game drive>
+
+      <a-entity id="steeringwheel" gltf-model="#wheel" position="3 -2 -3" scale="0.02 0.02 0.02"></a-entity>
+
+      <a-box id="acceralarator" src="./assets/acc.png" position="-3 -1.1 -2.5" scale="0.8 1.3 0.02" rotation="0 0 0" color="gray"></a-box>
+
+      <a-box id="breaks" src="./assets/break.png" position="-2 -1.2 -2.5" scale="0.7 1 0.02" color="gray"></a-box>
+
+      <a-entity id="timer" position="4.4 -2 -3" text="font: exo2bold; width: 10; value: 00:00"></a-entity>
+
+      <a-entity id="move-forward" position="-1 -1.9 -2.5" text="font: dejavu; width: 5; value: Up Arrow"></a-entity>
+
+      <a-entity id="stop" position="0.1 -1.9 -2.5" text="font: dejavu; width: 5; value: Spacebar"></a-entity>
+
+    <a-entity id="speed" position="-1 0.5 -2.5" text="font: exo2bold; width: 7; value: 10">
+      <a-entity id="unit" position="-0.6 -0.04 0" text="font: exo2bold; width: 5; value: km/h"></a-entity>
+    </a-entity>
+
+    <a-entity id="over" position="3.5 0 -2" text="font: exo2bold; width: 10; value: Keep Trying :)"visible="false"></a-entity>
+
+
+    </a-entity>
+  </a-entity>
+
+  </a-scene>
+</body>
+
+</html>
